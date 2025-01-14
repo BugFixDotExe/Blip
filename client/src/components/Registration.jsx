@@ -7,7 +7,9 @@ import {
     Button,
     Typography,
     CircularProgress,
+    Divider,
 } from "@mui/material";
+import { motion } from "framer-motion";
 
 const SignupForm = () => {
     const [formData, setFormData] = useState({
@@ -56,10 +58,48 @@ const SignupForm = () => {
     };
 
     return (
-        <Card sx={{ maxWidth: 700, margin: "200px auto", padding: 2, boxShadow: 3 }}>
+        <Box
+        sx={{
+            background: "linear-gradient(to bottom, #f5f7fa, #c3cfe2)",
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        }}
+        >
+        <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        >
+        <Card
+        sx={{
+            maxWidth: 500,
+            padding: 4,
+            borderRadius: 3,
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+        }}
+        >
         <CardContent>
-        <Typography variant="h5" gutterBottom>
-        Sign Up
+        <Typography
+        variant="h4"
+        sx={{
+            textAlign: "center",
+            marginBottom: 2,
+            color: "#3f51b5",
+        }}
+        >
+        Create an Account
+        </Typography>
+        <Typography
+        variant="body1"
+        sx={{
+            textAlign: "center",
+            marginBottom: 3,
+            color: "#555",
+        }}
+        >
+        Join us and start your journey!
         </Typography>
         <form onSubmit={handleSubmit} method="POST">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -70,6 +110,7 @@ const SignupForm = () => {
         value={formData.username}
         onChange={handleChange}
         fullWidth
+        variant="outlined"
         required
         />
         <TextField
@@ -79,6 +120,7 @@ const SignupForm = () => {
         value={formData.email}
         onChange={handleChange}
         fullWidth
+        variant="outlined"
         required
         />
         <TextField
@@ -88,6 +130,7 @@ const SignupForm = () => {
         value={formData.password}
         onChange={handleChange}
         fullWidth
+        variant="outlined"
         required
         />
         <Button
@@ -96,23 +139,63 @@ const SignupForm = () => {
         color="primary"
         disabled={loading}
         fullWidth
+        sx={{
+            padding: "10px",
+            background: "linear-gradient(90deg, #667eea, #764ba2)",
+        }}
         >
         {loading ? <CircularProgress size={24} /> : "Sign Up"}
         </Button>
         </Box>
         </form>
+        <Divider sx={{ marginY: 2 }} />
         {successMessage && (
-            <Typography variant="body1" color="success.main" sx={{ marginTop: 2 }}>
+            <Typography
+            variant="body2"
+            sx={{
+                color: "green",
+                textAlign: "center",
+                marginTop: 2,
+            }}
+            >
             {successMessage}
             </Typography>
         )}
         {errorMessage && (
-            <Typography variant="body1" color="error.main" sx={{ marginTop: 2 }}>
+            <Typography
+            variant="body2"
+            sx={{
+                color: "red",
+                textAlign: "center",
+                marginTop: 2,
+            }}
+            >
             {errorMessage}
             </Typography>
         )}
+        <Typography
+        variant="body2"
+        sx={{
+            textAlign: "center",
+            marginTop: 3,
+            color: "#777",
+        }}
+        >
+        Already have an account?{" "}
+        <a
+        href="/login"
+        style={{
+            textDecoration: "none",
+            color: "#3f51b5",
+        }}
+        >
+        Sign in here
+        </a>
+        </Typography>
         </CardContent>
         </Card>
+        </motion.div>
+        </Box>
     );
 };
 
