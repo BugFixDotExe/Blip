@@ -1,66 +1,65 @@
-import React, { useState } from 'react';
-import {
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    Button,
-    Divider,
-    List,
-    ListItem,
-    ListItemText,
-} from "@mui/material";
+import React, { useState } from "react";
+import axios from "axios";
+import { useAuth } from "./AuthContext";
+import { Card, CardContent, Button, TextField } from "@mui/material";
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    })
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [error, setError] = useState("");
+    const { setToken } = useAuth();
+
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value}
-        )
-    }
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        if (!formData.email || !formData.password) {
+            setError("Email and password are required.");
+            return;
+        }
+
         try {
-            const response = await fetch('http://localhost:5000/api/v1/user/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formData),
-            })
-            if (response.ok){console.log('sign in success')}
-            else{console.log('sign in failed')}
-        } catch (err){console.log(err)}
-    }
+            const response = await axios.post("http://localhost:5000/api/v1/user/login", formData);
+            if (response) {
+                console.log('in login',response.data.token)
+                setToken(response.data.token);
+                setError("");
+            } else {
+                setError("Login failed. Please check your credentials.");
+            }
+        } catch (err) {
+            setError("An error occurred during login. Please try again.");
+            console.error(err);
+        }
+    };
+
     return (
         <Card sx={{ maxWidth: 700, margin: "20px auto", padding: 2, boxShadow: 3 }}>
         <CardContent>
         <form onSubmit={handleSubmit} method="POST">
-        <div>
-        <label htmlFor="email">Email:</label>
-        <input
+        <TextField
+        label="Email"
         type="email"
-        id="email"
         name="email"
         value={formData.email}
         onChange={handleChange}
+        fullWidth
+        margin="normal"
         />
-        </div>
-
-        <div>
-        <label htmlFor="password">Password:</label>
-        <input
+        <TextField
+        label="Password"
         type="password"
-        id="password"
         name="password"
         value={formData.password}
         onChange={handleChange}
+        fullWidth
+        margin="normal"
         />
-        </div>
-        <button type="submit">Sign In</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+        Sign In
+        </Button>
         </form>
         </CardContent>
         </Card>
