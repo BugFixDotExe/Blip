@@ -8,10 +8,12 @@ import multer from 'multer'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/home/mariecurie/Desktop/blip/blip-backend/uploads') // folder to store uploaded files
+    cb(null, '/home/mariecurie/Desktop/blip/uploads') // folder to store uploaded files
   },
   fileame: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`)
   },
 });
 const upload = multer({ storage })
+
+export default upload

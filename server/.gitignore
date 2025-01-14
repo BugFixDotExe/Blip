@@ -2,14 +2,14 @@
 node_modules/
 npm-debug.log
 
-# IDE files
+# IDE and personal files by extension
 *.suo
 *.user
 *.sln
 *.tmp
 *.pdb
 *.cache
-
+*.pem
 # OS generated files
 Thumbs.db
 *.DS_Store
