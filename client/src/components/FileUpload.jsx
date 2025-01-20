@@ -11,15 +11,16 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { useAuth } from "./AuthContext";
 
-const FileUpload = () => {
-  const { token } = useAuth();
+const FileUpload = ({ token }) => {
+  if (!token) {
+    return res.status(401).json({error: 'Unauthroized access'})
+  }
+  console.log('file upload token', token)
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0); // 0 for Thumbnail, 1 for Video
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setMessage(""); // Clear previous messages
@@ -38,7 +39,6 @@ const FileUpload = () => {
 
     setLoading(true);
     setMessage("");
-
     try {
       const endpoint =
       tabIndex === 0

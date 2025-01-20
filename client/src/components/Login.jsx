@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useAuth } from "./AuthContext";
 import {
     Card,
     CardContent,
@@ -13,11 +12,9 @@ import {
 import { motion } from "framer-motion";
 import { Google as GoogleIcon, Apple as AppleIcon } from "@mui/icons-material";
 
-const Login = () => {
+const Login = ({ setToken }) => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
-    const { setToken } = useAuth();
-
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -35,8 +32,10 @@ const Login = () => {
                 formData
             );
             if (response) {
-                setToken(response.data.token);
                 setError("");
+                console.log(response.data.token)
+                setToken(response.data.token)
+                localStorage.setItem('token', response.data.token);
             } else {
                 setError("Login failed. Please check your credentials.");
             }
