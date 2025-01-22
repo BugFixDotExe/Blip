@@ -41,14 +41,18 @@ class UserController {
     static async getUserLogin(req, res) {
         const {email, password } = req.body;
         console.log('login credentials', req.body)
-        const isUser = await dbClient.isExistingUser(email);
-        if (isUser) {console.log('Welcome', isUser._id)}
-        const token = AuthController.generateJWT(req, res, isUser._id)
-        res.status(200).json({token: token})
-        if (!isUser){console.log('It Appers you forgot your email or password, have you by any chance signed up ?')}
+        try {
+            const isUser = await dbClient.isExistingUser(email);
+            console.log(isUser)
+            if (isUser !== null) {
+                const token = AuthController.generateJWT(req, res, isUser._id)
+                res.status(200).json({token: token})
+            }
+            else {
+                res.json({failed:'failed to login'})
+            }
+        } catch(err){}
+        }
 
-    }
 }
-
-
 export default UserController;
