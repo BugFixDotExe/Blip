@@ -27,7 +27,8 @@ class UserController {
                     console.log('User with email exist');
                     return res.status(400).json({error: 'User with email exist'})
                 }
-                await dbClient.insertUser(req.body)
+                const saveStatus = await dbClient.insertUser(req.body)
+                if(saveStatus){res.json({ok: 'Success'})}
             }
         }catch (err){
             console.log(err)
@@ -41,9 +42,9 @@ class UserController {
         const {email, password } = req.body;
         console.log('login credentials', req.body)
         const isUser = await dbClient.isExistingUser(email);
-        if (isUser) {console.log('Welcome')}
-        const token = AuthController.generateJWT(req, res, isUser)
-        res.status(201).json({token: token})
+        if (isUser) {console.log('Welcome', isUser._id)}
+        const token = AuthController.generateJWT(req, res, isUser._id)
+        res.status(200).json({token: token})
         if (!isUser){console.log('It Appers you forgot your email or password, have you by any chance signed up ?')}
 
     }
