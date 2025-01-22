@@ -38,13 +38,27 @@ class GoogleGemeni {
       // Get the generative model
       const model = genAI.getGenerativeModel({ model: 'models/gemini-1.5-pro' });
       if (mime.split('/')[0] === 'image') { prompt=
-        `prompt_for_thumbnail_guideline_check: Analyze the following YouTube thumbnail image against YouTube's Community Guidelines and provide only a JSON response.
-        The JSON response should include: compliant: A boolean indicating whether the thumbnail complies with the guidelines.
-        violations: An array of strings, where each string describes a specific violation. If the thumbnail is compliant, this should be an empty array.
-        guideline: If there's a violation, specify the category of the guideline violated (e.g., Harmful or dangerous content, Nudity or sexual content, Hate speech, etc.). If compliant, this can be null.
-        details: A more detailed explanation of the violations and why they dont meet YouTubes standards. If compliant, provide a general statement confirming compliance.
-        suggestions: An array of strings providing suggestions on how to make the thumbnail compliant. This should be an empty array if the thumbnail is already compliant.  
-        Here's the image URL or base64 encoded image data`
+        `prompt_for_thumbnail_guideline_check:
+        "instructions": "Analyze the provided image for both content compliance with YouTube's Community Guidelines. Consider context when evaluating potential violations. Return only a JSON structured response as described below.",
+        "input_data": {
+          "video_url": "[INSERT_VIDEO_URL_HERE]",
+          "or": {
+            "video_file": "[BASE64_ENCODED_VIDEO_DATA]"
+          }
+        },
+        "response_format": {
+          "visual_violations": [
+            {
+              "start_time": "[START_TIMESTAMP]",
+              "end_time": "[END_TIMESTAMP]",
+              "violation_type": "[GUIDELINE_VIOLATED - e.g., Nudity or sexual content, Harmful or dangerous content, etc.]",
+              "details": "[DETAILED_EXPLANATION_OF_VIOLATION]",
+              "suggestions": ["[SUGGESTIONS_FOR_COMPLIANCE - e.g., Blur or remove visual elements, add context, etc.]"]
+            }
+          ],
+          "compliant_overall": "[BOOLEAN: True if ENTIRE video is compliant, False if ANY violations are found]"
+        }
+      },`
         }
       if (mime.split('/')[0] === 'video') { prompt=
         `prompt_for_video_community_guidelines": {
@@ -99,17 +113,16 @@ class GoogleGemeni {
         // Step 2: Parse the extracted JSON
         const jsonString = jsonMatch[1].trim();
         try {
-          const jsonObject = JSON.parse(jsonString);
+          const geminiJSONResponse = JSON.parse(jsonString);
           // Alternatively, you can log individual properties to check their contents:
-          console.log(jsonObject.visual_violations[0].suggestions); // Output the suggestions array directly
-          console.log(jsonObject);
+          console.log('supposed json obj', geminiJSONResponse);
+          return geminiJSONResponse
         } catch (error) {
           console.error("Invalid JSON:", error);
         }
       } else {
         console.error("JSON not found in the response.");
       }
-      console.log(result.response.text()); // Adjust based on actual API response structure
     } catch (error) {
       console.error('Error generating content:', error);
     }

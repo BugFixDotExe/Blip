@@ -30,7 +30,13 @@ class DBClient{
     }
     async isExistingEmail(){}
     async insertUser(userObj) {
-        this.collection.insertOne(userObj)
+        try {
+            await this.collection.insertOne(userObj)
+            return true
+        }catch(error){
+            return false
+        }
+
     }
 }
 

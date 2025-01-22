@@ -14,6 +14,15 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`)
   },
 });
-const upload = multer({ storage })
+
+
+function extentionChecker(file, cb) {
+  const ImageFileTypes = /jpeg|jpg|png|gif|heif|heic|webp|/;
+  const VideoFileTypes = /mp4|mpeg|mov|avi|x-flv|mpg|webm|wmv|3gpp/;
+}
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 2000000000}
+})
 
 export default upload
