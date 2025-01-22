@@ -24,7 +24,6 @@ class DBClient{
     }
 
     async isExistingUser(email){
-        console.log('The user email', email)
         return await this.collection.findOne({email})
 
     }

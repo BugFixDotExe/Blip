@@ -25,14 +25,12 @@ class AuthController {
         };
         // Generate and return the JWT to the client
         const token = jwt.sign(payload, AuthController.secretKey, options);
-        console.log(token)
         return token
     }
 
     static verifyJWT(token) {
         try {
             const decoded = jwt.verify(token, AuthController.publickey, options);
-
         }catch (error) {console.log(error);}
     }
 }

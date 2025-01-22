@@ -7,8 +7,6 @@ class GoogleGemeni {
   static async imageUnderstanding(key, filePath, fileName, mime) {
     try {
       let prompt;
-      // TODO: Set up an input args for passing in media type
-      // Using that knowlode set the mime type to the approprate one
       const fileManager = new GoogleAIFileManager(key);
       const genAI = new GoogleGenerativeAI(key);
       console.log(mime)
@@ -18,10 +16,6 @@ class GoogleGemeni {
           mimeType: mime,
           displayName: `${fileName}`,
         },
-      );
-      // View the response.
-      console.log(
-        `Uploaded file ${uploadResult.file.displayName} as: ${uploadResult.file.uri}`,
       );
       const name = uploadResult.file.name
       let file = await fileManager.getFile(name)
