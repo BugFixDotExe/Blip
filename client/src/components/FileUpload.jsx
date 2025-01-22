@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { v4 as uuid4} from 'uuid';
 import {
   Box,
   Card,
   CardContent,
   Typography,
   Button,
-  TextField,
   CircularProgress,
   Tabs,
   Tab,
 } from "@mui/material";
+import Dashboard from './Dashboard.jsx';
 
 const FileUpload = ({ token }) => {
   if (!token) {
-    return res.status(401).json({error: 'Unauthroized access'})
+    // You should handle unauthorized access with a message or redirection
+    return <Typography variant="body1" color="error" sx={{ marginTop: 2 }}>Unauthorized access. Please login to upload files.</Typography>;
   }
-  console.log('file upload token', token)
+
+  console.log('file upload token', token);
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0); // 0 for Thumbnail, 1 for Video
+  const [videoList, setVideoList] = useState([]);
+  const [gemeniResponse, setGemeniResponse] = useState([])
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setMessage(""); // Clear previous messages
@@ -51,8 +56,15 @@ const FileUpload = ({ token }) => {
           Authorization: `Bearer ${token}`, // Include the token in the request
         },
       });
+      console.log('from gemeni to you', response)
+      setGemeniResponse(response.data)
+      setMessage("File uploaded successfully!");
+      console.log('file name:', file.name);
 
-      setMessage(response.data.message || "File uploaded successfully!");
+      // Update the video list
+      file.id = uuid4();
+      setVideoList((prevList) => [...prevList, file]);
+      console.log('videolist', videoList)
     } catch (error) {
       setMessage("Error uploading file. Please try again.");
     } finally {
@@ -149,6 +161,9 @@ const FileUpload = ({ token }) => {
       {message}
       </Typography>
     )}
+
+    {/* Render Dashboard component with updated videoList */}
+    <Dashboard videoList={videoList} gemeniResponse={gemeniResponse} tabIndex={tabIndex}/>
     </CardContent>
     </Card>
   );

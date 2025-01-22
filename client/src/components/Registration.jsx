@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Card,
@@ -20,7 +21,7 @@ const SignupForm = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
+    const navigate = useNavigate();
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -46,6 +47,8 @@ const SignupForm = () => {
             if (response.ok) {
                 setSuccessMessage("Signup successful! Welcome aboard!");
                 setFormData({ username: "", email: "", password: "" }); // Clear the form
+                navigate('/login')
+
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || "Signup failed. Please try again.");

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import {
     Card,
     CardContent,
@@ -15,6 +16,7 @@ import { Google as GoogleIcon, Apple as AppleIcon } from "@mui/icons-material";
 const Login = ({ setToken }) => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
+    const navigate = useNavigate();
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -33,9 +35,8 @@ const Login = ({ setToken }) => {
             );
             if (response) {
                 setError("");
-                console.log(response.data.token)
                 setToken(response.data.token)
-                localStorage.setItem('token', response.data.token);
+                navigate('/upload')
             } else {
                 setError("Login failed. Please check your credentials.");
             }
