@@ -37,9 +37,8 @@ const Login = ({ setToken }) => {
                 setError("");
                 setToken(response.data.token)
                 navigate('/upload')
-            } else {
-                setError("Login failed. Please check your credentials.");
             }
+            if (response.failed){setError('An error occurred during login. Please try again.')}
         } catch (err) {
             setError("An error occurred during login. Please try again.");
             console.error(err);
