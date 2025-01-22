@@ -16,7 +16,7 @@ import Dashboard from './Dashboard.jsx';
 const FileUpload = ({ token }) => {
   if (!token) {
     // You should handle unauthorized access with a message or redirection
-    return <Typography variant="body1" color="error" sx={{ marginTop: 2 }}>Unauthorized access. Please login to upload files.</Typography>;
+    return <Typography variant="body1" color="error" sx={{ marginTop: 2 }}>Unauthorized access. Please login or sign up to upload files.</Typography>;
   }
 
   console.log('file upload token', token);
@@ -56,7 +56,6 @@ const FileUpload = ({ token }) => {
           Authorization: `Bearer ${token}`, // Include the token in the request
         },
       });
-      console.log('from gemeni to you', response)
       setGemeniResponse(response.data)
       setMessage("File uploaded successfully!");
       console.log('file name:', file.name);
