@@ -155,9 +155,6 @@ const Dashboard = ({ videoList, gemeniResponse, tabIndex }) => {
             >
             Close
             </Button>
-            {console.log('This is the google', gemeniResponse)}
-            {console.log(gemeniResponse.data.visual_violations)}
-
             </Box>
             </Modal>
         )}
