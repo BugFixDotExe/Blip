@@ -7,7 +7,6 @@ dotenv.config();
 class VideoPipe {
   static async fetchVideoValidity(req, res) {
     const VIDEO_KEY = process.env.GOOGLE_GEMENI_API_KEY_VIDEO
-    console.log(VIDEO_KEY)
     const videoLength = new Promise((resolve, reject) => {
       const videoMeta =ffmpeg.ffprobe(req.file.path, (err, metadata) => {
         if(err){reject('Missing a valid video')}
@@ -22,7 +21,6 @@ class VideoPipe {
     videoLength.catch((err)=>{console.log(err)})
     const gemeniResponse = await GoogleGemeni.imageUnderstanding(VIDEO_KEY, req.file.path, req.file.originalname, req.file.mimetype);
     res.status(200).json({data:gemeniResponse})
-    console.log(req.file)
   }
 }
 
