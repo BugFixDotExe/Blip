@@ -49,11 +49,17 @@ GOOGLE_API_KEY=your-google-api-key
 MONGODB_URI=your-mongodb-connection-string
 PORT=5000
 ```
+**JWT Authorization File: **
+Your required to create a Asymetric key when working with JWT
+this is the approach i took, rather than use Symetric approach
+- Generate HSA Private and Public Keys
+- Save the Public and Private Keys in files with names:
+    - privatekey.pem
+    - publickey.pem
 
-**Frontend .env File:**
-```env
-VITE_GOOGLE_API_KEY=your-google-api-key
-```
+
+
+
 
 ### Step 4: Install Dependencies
 Navigate to the **frontend** and **backend** directories and install the required dependencies:
